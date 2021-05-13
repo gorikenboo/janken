@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/sample.css">
+  <title>じゃんけん</title>
+</head>
+
+<body>
+  <header>
+    <h1>ランボルギーニゲーム自動(変更ver.)</h1>
+  </header>
+
+  <main>
+    <p>
+      あなたの前に3つの扉があります。1つの後ろにはスーパーカーのランボルギーニが、
+      2つの扉の向こうにはヤギがいます。扉を当てれたら、ランボルギーニはあなたのものです。扉を選んでください。
+    </p>
+    <div class="door_img">
+      <div class="door_box">
+        <div id="door1">
+          <img class="doorimg" src="img/door.png" alt="">
+        </div>
+        <div id="door2">
+          <img class="doorimg" src="img/door.png" alt="">
+        </div>
+        <div id="door3">
+          <img class="doorimg" src="img/door.png" alt="">
+        </div>
+      </div>
+    </div>
+    <div id="com_hand"></div>
+    <div id="count"></div>
+    <div id="result"></div>
+  </main>
+
+  <footer></footer>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    let co1 = 0;//ランボルギーニ
+    let co2 = 0;//ヤギ
+    // 1~3
+    const min = 1;
+    const max = 3;
+    let num1 = [Math.floor(Math.random() * (max - min + 1) + min)];
+    for (let i = 0; i < 1000; i++) {
+      num1.push(Math.floor(Math.random() * (max - min + 1) + min));
+    }
+    // 1or2
+    const minn = 1;
+    const maxx = 2;
+    let num2 = [Math.floor(Math.random() * (maxx - minn + 1) + minn)];
+    for (let i = 0; i < 1000; i++) {
+      num2.push(Math.floor(Math.random() * (maxx - minn + 1) + minn));
+    }
+    let dr1 = 0;
+    let dr2 = 0;
+    let dr3 = 0;
+    let j = 0;
+    let time = 200;
+    let interval = 200;
+
+    let doorselect = function () {
+      $("#door1").html('<img id="select" class="door_visited" src="img/door.png" alt="">');
+      $("#com_hand").text("選ばなかったドアのどちらかには必ずハズレがあります。ハズレを知りたくないですか？知りたい人はクリック！");
+      dr1 = dr1 + 0.6;
+    }
+    let doorselect2 = function () { setInterval(doorselect, interval * 4); }
+    setTimeout(doorselect, time);
+    setTimeout(doorselect2, time);
+    let hazureopen = function () {
+      if (dr1 == 0.6) {
+        if (num1[j] == 1) {
+          if (num2[j] == 1) { $("#door2").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+          else if (num2[j] == 2) { $("#door3").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        }
+        else if (num1[j] == 2) { $("#door3").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        else if (num1[j] == 3) { $("#door2").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        $("#com_hand").text("さらにチャンス！選んだドアを変更できるよ！最終的に選んだドアをクリック！");
+        $("#com_hand").attr("id", 'com_hand2');
+      }
+      else if (dr2 == 0.6) {
+        if (num1[j] == 2) {
+          if (num2[j] == 1) { $("#door1").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+          else if (num2[j] == 2) { $("#door3").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        }
+        else if (num1[j] == 1) { $("#door3").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        else if (num1[j] == 3) { $("#door1").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        $("#com_hand").text("さらにチャンス！選んだドアを変更できるよ！最終的に選んだドアをクリック！");
+        $("#com_hand").attr("id", 'com_hand2');
+      }
+
+      else if (dr3 == 0.6) {
+        if (num1[j] == 3) {
+          if (num2[j] == 1) { $("#door1").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+          else if (num2[j] == 2) { $("#door2").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+          console.log("ここ");
+        }
+        else if (num1[j] == 1) { $("#door2").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        else if (num1[j] == 2) { $("#door1").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">'); }
+        $("#com_hand").text("さらにチャンス！選んだドアを変更できるよ！最終的に選んだドアをクリック！");
+        $("#com_hand").attr("id", 'com_hand2');
+        console.log("こっち");
+      }
+    }
+    let hazureopen2 = function () { setInterval(hazureopen, interval * 4); }
+    setTimeout(hazureopen, time * 2);
+    setTimeout(hazureopen2, time * 2);
+    let dooropen = function () {
+      if (num1[j] == 1) {
+        if (num2[j] == 1) {
+          $("#door3").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">');
+          $("#com_hand2").text("残念ヤギです");
+          co2 = co2 + 1;
+          $("#count").text("ランボルギーニ" + co1 + "台　" + "ヤギ" + co2 + "匹　当たりの確率" + Math.floor(co1 / (co1 + co2) * 100) + "パーセント");
+          $("#result").text("もう一度やる");
+        }
+        else if (num2[j] == 2) {
+          $("#door2").html('<img class="doorimgyagi"" src="img/dyagi.png" alt="">');
+          $("#com_hand2").text("残念ヤギです");
+          co2 = co2 + 1;
+          $("#count").text("ランボルギーニ" + co1 + "台　" + "ヤギ" + co2 + "匹　当たりの確率" + Math.floor(co1 / (co1 + co2) * 100) + "パーセント");
+          $("#result").text("もう一度やる");
+        }
+      }
+      else if (num1[j] == 2) {
+        $("#door2").html('<img class="atari"" src="img/atari.png" alt="">');
+        $("#com_hand2").text("おめでとう！ランボルギーニゲット！！");
+        co1 = co1 + 1;
+        $("#count").text("ランボルギーニ" + co1 + "台　" + "ヤギ" + co2 + "匹　当たりの確率" + Math.floor(co1 / (co1 + co2) * 100) + "パーセント");
+        $("#result").text("もう一度やる");
+      }
+      else if (num1[j] == 3) {
+        $("#door3").html('<img class="atari"" src="img/atari.png" alt="">');
+        $("#com_hand2").text("おめでとう！ランボルギーニゲット！！");
+        co1 = co1 + 1;
+        $("#count").text("ランボルギーニ" + co1 + "台　" + "ヤギ" + co2 + "匹　当たりの確率" + Math.floor(co1 / (co1 + co2) * 100) + "パーセント");
+        $("#result").text("もう一度やる");
+      }
+    }
+    let dooropen2 = function () { setInterval(dooropen, interval * 4); }
+    setTimeout(dooropen, time * 3);
+    setTimeout(dooropen2, time * 3);
+    let again = function () {
+      $("#door1").html('<img class="doorimg" src="img/door.png" alt="">');
+      $("#door2").html('<img class="doorimg" src="img/door.png" alt="">');
+      $("#door3").html('<img class="doorimg" src="img/door.png" alt="">');
+      j = j + 1;
+      dr1 = 0;
+      dr2 = 0;
+      dr3 = 0;
+      $("#com_hand2").text(j + 1 + "回目");
+      $("#com_hand2").attr("id", 'com_hand');
+    }
+    let again2 = function () { setInterval(again, interval * 4); }
+    setTimeout(again, time * 4);
+    setTimeout(again2, time * 4);
+
+  </script>
+
+</body>
+
+</html>
